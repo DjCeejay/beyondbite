@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Portal - Beyond Bites</title>
+  <link rel="icon" type="image/jpeg" href="/assets/logo.jpg" />
+  <link rel="stylesheet" href="/css/styles.css" />
+  <!-- Cloudinary Upload Widget -->
+  <script src="https://widget.cloudinary.com/v2.0/global/all.js" type="text/javascript"></script>
+</head>
+<body class="bg-brand-cream text-brand-dark min-h-screen">
+
+  <!-- ADMIN LOGIN VIEW -->
+  <div id="admin-login-view" class="min-h-screen flex items-center justify-center p-4">
+    <div class="w-full max-w-md bg-white rounded-3xl p-8 border border-brand-creamDark shadow-warm-lg">
+      <div class="text-center mb-8">
+        <img src="/assets/logo.jpg" alt="Beyond Bites Logo" class="h-16 w-16 mx-auto rounded-full border-2 border-brand-brown mb-3 shadow-md">
+        <h1 class="font-serif font-extrabold text-2xl text-brand-darkbrown">Admin Portal</h1>
+        <p class="text-xs text-stone-500 font-medium">Sign in to manage menu items & hero slideshow</p>
+      </div>
+
+      <div id="login-error-msg" class="hidden mb-6 p-4 rounded-2xl bg-red-50 border border-red-200 text-red-700 text-sm font-semibold"></div>
+
+      <form id="admin-login-form" class="space-y-4">
+        <div>
+          <label class="block text-xs font-bold text-brand-darkbrown uppercase tracking-wider mb-1">Email Address</label>
+          <input type="email" id="login-email" required class="w-full p-3.5 rounded-2xl border border-brand-creamDark bg-brand-cream focus:ring-2 focus:ring-brand-brown focus:outline-none text-sm" placeholder="admin@beyondbites.com">
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-brand-darkbrown uppercase tracking-wider mb-1">Password</label>
+          <input type="password" id="login-password" required class="w-full p-3.5 rounded-2xl border border-brand-creamDark bg-brand-cream focus:ring-2 focus:ring-brand-brown focus:outline-none text-sm" placeholder="••••••••">
+        </div>
+
+        <button type="submit" class="w-full py-4 rounded-2xl bg-brand-brown hover:bg-brand-darkbrown text-white font-bold text-base transition-all shadow-md active:scale-95">
+          Sign In as Admin
+        </button>
+      </form>
+
+      <div class="mt-6 pt-6 border-t border-brand-creamDark text-center">
+        <a href="/" class="text-xs font-bold text-brand-brown hover:underline">← Back to Public Website</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ADMIN DASHBOARD VIEW (PROTECTED) -->
+  <div id="admin-dashboard-view" class="hidden min-h-screen flex flex-col">
+    
+    <!-- Top Admin Header -->
+    <header class="bg-brand-darkbrown text-white border-b border-brand-gold/20 sticky top-0 z-30">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <img src="/assets/logo.jpg" alt="Logo" class="h-10 w-10 rounded-full border border-brand-gold">
+          <div>
+            <h2 class="font-serif font-bold text-lg text-brand-gold">Beyond Bites Admin</h2>
+            <p class="text-xs text-stone-300">Management Dashboard</p>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-4">
+          <a href="/" target="_blank" class="px-4 py-2 rounded-full bg-white/10 hover:bg-white/20 text-white font-semibold text-xs transition-colors">
+            View Live Site ↗
+          </a>
+          <button id="admin-logout-btn" class="px-4 py-2 rounded-full bg-red-600 hover:bg-red-700 text-white font-bold text-xs transition-colors shadow-sm">
+            Sign Out
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-1 w-full">
+      
+      <!-- Dashboard Tab Navigation -->
+      <div class="flex items-center gap-3 mb-8 border-b border-brand-creamDark pb-4">
+        <button id="tab-btn-menu" class="px-6 py-3 rounded-full font-bold text-sm bg-brand-brown text-white transition-all shadow-sm">
+          🍔 Menu Items Manager
+        </button>
+        <button id="tab-btn-slides" class="px-6 py-3 rounded-full font-bold text-sm bg-white text-brand-darkbrown hover:bg-brand-creamDark transition-all shadow-sm">
+          🖼️ Hero Photo & Video Slideshow
+        </button>
+      </div>
+
+      <!-- SECTION 1: MENU ITEMS MANAGER -->
+      <section id="section-menu-manager" class="space-y-6">
+        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+          <div>
+            <h3 class="font-serif font-extrabold text-2xl text-brand-darkbrown">Menu Items</h3>
+            <p class="text-sm text-stone-600">Update prices, stock status, descriptions, or add new food items.</p>
+          </div>
+          <button id="btn-add-menu-item" class="px-5 py-3 rounded-2xl bg-brand-brown hover:bg-brand-darkbrown text-white font-bold text-sm transition-all shadow-md flex items-center gap-2">
+            <span>+ Add New Item</span>
+          </button>
+        </div>
+
+        <!-- Menu Table -->
+        <div class="bg-white rounded-3xl border border-brand-creamDark shadow-warm overflow-hidden">
+          <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+              <thead>
+                <tr class="bg-brand-cream border-b border-brand-creamDark text-brand-darkbrown font-serif text-sm">
+                  <th class="p-4">Item Name</th>
+                  <th class="p-4">Category</th>
+                  <th class="p-4">Price</th>
+                  <th class="p-4">Badge</th>
+                  <th class="p-4">Status</th>
+                  <th class="p-4 text-right">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="admin-menu-table-body">
+                <!-- Rendered by admin.js -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION 2: HERO SLIDESHOW MANAGER -->
+      <section id="section-slide-manager" class="hidden space-y-6">
+        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+          <div>
+            <h3 class="font-serif font-extrabold text-2xl text-brand-darkbrown">Hero Photo & Video Slideshow</h3>
+            <p class="text-sm text-stone-600">Upload pictures or video clips to Cloudinary for the landing page hero carousel.</p>
+          </div>
+          <button id="btn-add-slide" class="px-5 py-3 rounded-2xl bg-brand-brown hover:bg-brand-darkbrown text-white font-bold text-sm transition-all shadow-md flex items-center gap-2">
+            <span>+ Add Photo / Video Slide</span>
+          </button>
+        </div>
+
+        <!-- Slides Table -->
+        <div class="bg-white rounded-3xl border border-brand-creamDark shadow-warm overflow-hidden">
+          <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+              <thead>
+                <tr class="bg-brand-cream border-b border-brand-creamDark text-brand-darkbrown font-serif text-sm">
+                  <th class="p-4">Media Title</th>
+                  <th class="p-4">Type</th>
+                  <th class="p-4">Order</th>
+                  <th class="p-4">Status</th>
+                  <th class="p-4 text-right">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="admin-slides-table-body">
+                <!-- Rendered by admin.js -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+  </div>
+
+  <!-- MODAL: ADD / EDIT MENU ITEM -->
+  <div id="item-modal" class="fixed inset-0 z-50 hidden bg-brand-dark/60 backdrop-blur-md flex items-center justify-center p-4">
+    <div class="w-full max-w-lg bg-white rounded-3xl p-6 md:p-8 shadow-2xl border border-brand-creamDark max-h-[90vh] overflow-y-auto">
+      <div class="flex items-center justify-between pb-4 border-b border-brand-creamDark mb-6">
+        <h3 id="item-modal-title" class="font-serif font-bold text-xl text-brand-darkbrown">Add Menu Item</h3>
+        <button id="close-item-modal" class="w-8 h-8 rounded-full bg-stone-100 hover:bg-stone-200 text-stone-700 font-bold">✕</button>
+      </div>
+
+      <form id="menu-item-form" class="space-y-4">
+        <input type="hidden" id="item-id">
+
+        <div>
+          <label class="block text-xs font-bold text-brand-darkbrown uppercase tracking-wider mb-1">Item Name</label>
+          <input type="text" id="item-name" required class="w-full p-3 rounded-2xl border border-brand-creamDark bg-brand-cream text-sm">
+        </div>
+
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="block text-xs font-bold text-brand-darkbrown uppercase tracking-wider mb-1">Category</label>
+            <select id="item-category" class="w-full p-3 rounded-2xl border border-brand-creamDark bg-brand-cream text-sm">
+              <option value="Sandwiches">Sandwiches</option>
+              <option value="Combos">Combos</option>
+              <option value="Extras">Extras</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-brand-darkbrown uppercase tracking-wider mb-1">Price (₦)</label>
+            <input type="number" id="item-price" required min="0" class="w-full p-3 rounded-2xl border border-brand-creamDark bg-brand-cream text-sm">
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-brand-darkbrown uppercase tracking-wider mb-1">Set Tag / Subtitle (Optional)</label>
+          <input type="text" id="item-set-info" class="w-full p-3 rounded-2xl border border-brand-creamDark bg-brand-cream text-sm" placeholder="e.g. (2 IN 1 OF 3 SETS)">
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-brand-darkbrown uppercase tracking-wider mb-1">Description</label>
+          <textarea id="item-description" rows="2" class="w-full p-3 rounded-2xl border border-brand-creamDark bg-brand-cream text-sm" placeholder="Stuffed with sardine, eggs, mayonnaise..."></textarea>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-brand-darkbrown uppercase tracking-wider mb-1">Includes Sides / Extras (Optional)</label>
+          <input type="text" id="item-sides" class="w-full p-3 rounded-2xl border border-brand-creamDark bg-brand-cream text-sm" placeholder="e.g. Comes with 2 Sausages + 30cl 5Alive Pulpy Orange Drink">
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-brand-darkbrown uppercase tracking-wider mb-1">Image URL (or Upload via Cloudinary)</label>
+          <div class="flex gap-2">
+            <input type="url" id="item-image-url" class="flex-1 p-3 rounded-2xl border border-brand-creamDark bg-brand-cream text-sm" placeholder="https://res.cloudinary.com/...">
+            <button type="button" id="btn-upload-item-image" class="px-4 py-3 bg-brand-gold hover:bg-brand-amber text-brand-darkbrown font-bold text-xs rounded-2xl transition-colors shadow-sm">
+              Upload Media
+            </button>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-2 pt-2">
+          <input type="checkbox" id="item-best-value" class="w-5 h-5 rounded border-brand-creamDark text-brand-brown focus:ring-brand-brown">
+          <label for="item-best-value" class="text-sm font-bold text-brand-darkbrown">Mark as "🔥 BEST VALUE" Highlight</label>
+        </div>
+
+        <button type="submit" class="w-full py-4 rounded-2xl bg-brand-brown hover:bg-brand-darkbrown text-white font-bold text-base transition-all shadow-md active:scale-95 mt-4">
+          Save Menu Item
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: ADD SLIDESHOW SLIDE -->
+  <div id="slide-modal" class="fixed inset-0 z-50 hidden bg-brand-dark/60 backdrop-blur-md flex items-center justify-center p-4">
+    <div class="w-full max-w-lg bg-white rounded-3xl p-6 md:p-8 shadow-2xl border border-brand-creamDark max-h-[90vh] overflow-y-auto">
+      <div class="flex items-center justify-between pb-4 border-b border-brand-creamDark mb-6">
+        <h3 class="font-serif font-bold text-xl text-brand-darkbrown">Add Hero Slide</h3>
+        <button id="close-slide-modal" class="w-8 h-8 rounded-full bg-stone-100 hover:bg-stone-200 text-stone-700 font-bold">✕</button>
+      </div>
+
+      <form id="slide-form" class="space-y-4">
+        <div>
+          <label class="block text-xs font-bold text-brand-darkbrown uppercase tracking-wider mb-1">Slide Title / Overlay Text</label>
+          <input type="text" id="slide-title-input" required class="w-full p-3 rounded-2xl border border-brand-creamDark bg-brand-cream text-sm" placeholder="Freshly Toasting Our Signature Sandwiches">
+        </div>
+
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="block text-xs font-bold text-brand-darkbrown uppercase tracking-wider mb-1">Media Type</label>
+            <select id="slide-type-input" class="w-full p-3 rounded-2xl border border-brand-creamDark bg-brand-cream text-sm">
+              <option value="image">Photo / Image</option>
+              <option value="video">Video Clip</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-brand-darkbrown uppercase tracking-wider mb-1">Display Order</label>
+            <input type="number" id="slide-order-input" value="1" min="1" class="w-full p-3 rounded-2xl border border-brand-creamDark bg-brand-cream text-sm">
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-brand-darkbrown uppercase tracking-wider mb-1">Cloudinary Media URL</label>
+          <div class="flex gap-2">
+            <input type="url" id="slide-url-input" required class="flex-1 p-3 rounded-2xl border border-brand-creamDark bg-brand-cream text-sm" placeholder="https://res.cloudinary.com/...">
+            <button type="button" id="btn-upload-slide-media" class="px-4 py-3 bg-brand-gold hover:bg-brand-amber text-brand-darkbrown font-bold text-xs rounded-2xl transition-colors shadow-sm">
+              Upload File
+            </button>
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-brand-darkbrown uppercase tracking-wider mb-1">Video Thumbnail Poster URL (For Videos only)</label>
+          <input type="url" id="slide-poster-input" class="w-full p-3 rounded-2xl border border-brand-creamDark bg-brand-cream text-sm" placeholder="https://res.cloudinary.com/... (optional poster image)">
+        </div>
+
+        <button type="submit" class="w-full py-4 rounded-2xl bg-brand-brown hover:bg-brand-darkbrown text-white font-bold text-base transition-all shadow-md active:scale-95 mt-4">
+          Save Hero Slide
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <script type="module">
+    import { initAdmin } from '/js/admin.js';
+    document.addEventListener('DOMContentLoaded', () => {
+      initAdmin();
+    });
+  </script>
+</body>
+</html>
