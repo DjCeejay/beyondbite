@@ -1,8 +1,10 @@
 // Beyond Bites App Configuration
 export const CONFIG = {
-  SUPABASE_URL: import.meta.env.VITE_SUPABASE_URL || '',
+  SUPABASE_URL: import.meta.env.VITE_SUPABASE_URL || 'https://maommxcopvdmihfqnkse.supabase.co',
   SUPABASE_ANON_KEY: import.meta.env.VITE_SUPABASE_ANON_KEY || '',
-  CLOUDINARY_CLOUD_NAME: import.meta.env.VITE_CLOUDINARY_CLOUD_NAME || 'demo',
+  CLOUDINARY_CLOUD_NAME: import.meta.env.VITE_CLOUDINARY_CLOUD_NAME || 'lapch5uz',
+  CLOUDINARY_API_KEY: import.meta.env.VITE_CLOUDINARY_API_KEY || '848742736484911',
+  CLOUDINARY_FOLDER: import.meta.env.VITE_CLOUDINARY_FOLDER || 'beyondbite',
   CLOUDINARY_UPLOAD_PRESET: import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET || 'beyond_bites_preset',
   PHONE_PRIMARY: '08106794376',
   PHONE_SECONDARY: '08028948665',
@@ -67,7 +69,7 @@ export const DEFAULT_MENU_ITEMS = [
   },
   {
     id: 'demo-5',
-    name: 'Cheese',
+    name: 'Cheese Extra',
     category: 'Extras',
     price: 500,
     set_info: null,
@@ -79,7 +81,7 @@ export const DEFAULT_MENU_ITEMS = [
   },
   {
     id: 'demo-6',
-    name: 'Toasted Bread',
+    name: 'Toasted Bread Extra',
     category: 'Extras',
     price: 700,
     set_info: null,
@@ -91,7 +93,7 @@ export const DEFAULT_MENU_ITEMS = [
   },
   {
     id: 'demo-7',
-    name: 'Sausages',
+    name: 'Sausages Extra',
     category: 'Extras',
     price: 300,
     set_info: null,
