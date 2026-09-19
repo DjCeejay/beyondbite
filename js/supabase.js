@@ -168,6 +168,10 @@ export async function syncLocalSlideshowSlidesToSupabase() {
   return { synced: unsyncedSlides.length, skipped: localSlides.length - unsyncedSlides.length };
 }
 
+export function getLocalSlideshowSlideCount() {
+  return getLocalSlides().length;
+}
+
 // Delete Slideshow Slide (Admin)
 export async function deleteSlideshowSlide(id) {
   const client = getSupabase();

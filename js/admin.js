@@ -1,5 +1,5 @@
 import { getAdminSession, adminSignIn, adminSignOut, onAuthStateChange } from './auth.js';
-import { fetchMenuItems, saveMenuItem, deleteMenuItem, fetchSlideshowSlides, saveSlideshowSlide, deleteSlideshowSlide, syncLocalSlideshowSlidesToSupabase } from './supabase.js';
+import { fetchMenuItems, saveMenuItem, deleteMenuItem, fetchSlideshowSlides, saveSlideshowSlide, deleteSlideshowSlide, syncLocalSlideshowSlidesToSupabase, getLocalSlideshowSlideCount } from './supabase.js';
 import { CONFIG } from './config.js';
 
 let currentAdminSession = null;
@@ -109,6 +109,7 @@ function setupTabs() {
   // Setup Modals
   document.getElementById('btn-add-menu-item')?.addEventListener('click', () => openMenuItemModal());
   document.getElementById('btn-add-slide')?.addEventListener('click', () => openSlideModal());
+  document.getElementById('btn-sync-local-slides')?.addEventListener('click', () => handleLocalSlidesSync());
 
   document.getElementById('close-item-modal')?.addEventListener('click', () => closeModal('item-modal'));
   document.getElementById('close-slide-modal')?.addEventListener('click', () => closeModal('slide-modal'));
@@ -193,6 +194,7 @@ async function refreshSlideshowTable() {
   adminSlides = await fetchSlideshowSlides();
   const tableBody = document.getElementById('admin-slides-table-body');
   if (!tableBody) return;
+  updateLocalSlidesSyncStatus();
 
   if (adminSlides.length === 0) {
     tableBody.innerHTML = `<tr><td colspan="5" class="p-6 text-center text-stone-500">No slideshow items uploaded yet.</td></tr>`;
@@ -231,6 +233,47 @@ async function refreshSlideshowTable() {
       }
     });
   });
+}
+
+async function handleLocalSlidesSync() {
+  const status = document.getElementById('local-slides-sync-status');
+  if (status) {
+    status.classList.remove('hidden', 'border-red-200', 'bg-red-50', 'text-red-700');
+    status.classList.add('border-brand-gold/30', 'bg-brand-gold/10', 'text-brand-darkbrown');
+    status.innerText = 'Syncing local slideshow uploads to Supabase...';
+  }
+
+  try {
+    const result = await syncLocalSlideshowSlidesToSupabase();
+    await refreshSlideshowTable();
+    if (status) {
+      status.classList.remove('hidden');
+      status.innerText = result.synced > 0
+        ? `Synced ${result.synced} local slideshow upload(s). They should now show on mobile after refreshing.`
+        : 'No local-only slideshow uploads found to sync.';
+    }
+  } catch (err) {
+    if (status) {
+      status.classList.remove('hidden', 'border-brand-gold/30', 'bg-brand-gold/10', 'text-brand-darkbrown');
+      status.classList.add('border-red-200', 'bg-red-50', 'text-red-700');
+      status.innerText = `Could not sync local slides: ${err.message || 'Supabase rejected the request. Make sure you are logged in with the Supabase admin account.'}`;
+    }
+  }
+}
+
+function updateLocalSlidesSyncStatus() {
+  const status = document.getElementById('local-slides-sync-status');
+  if (!status) return;
+
+  const localCount = getLocalSlideshowSlideCount();
+  if (localCount === 0) {
+    status.classList.add('hidden');
+    return;
+  }
+
+  status.classList.remove('hidden', 'border-red-200', 'bg-red-50', 'text-red-700');
+  status.classList.add('border-brand-gold/30', 'bg-brand-gold/10', 'text-brand-darkbrown');
+  status.innerText = `${localCount} slideshow upload(s) are still stored only on this device. Click "Sync Local Slides" so mobile visitors can see them too.`;
 }
 
 function openMenuItemModal(item = null) {
