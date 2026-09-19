@@ -327,11 +327,17 @@ function triggerCloudinaryWidget(onSuccessCallback, resourceType = 'auto') {
     const widget = window.cloudinary.createUploadWidget({
       cloudName: CONFIG.CLOUDINARY_CLOUD_NAME,
       uploadPreset: CONFIG.CLOUDINARY_UPLOAD_PRESET,
+      folder: CONFIG.CLOUDINARY_FOLDER,
       resourceType: resourceType,
       sources: ['local', 'camera', 'url'],
       multiple: false
     }, (error, result) => {
-      if (!error && result && result.event === 'success') {
+      if (error) {
+        alert(getCloudinaryUploadErrorMessage(error));
+        return;
+      }
+
+      if (result && result.event === 'success') {
         onSuccessCallback(result.info.secure_url);
       }
     });
@@ -352,4 +358,14 @@ function triggerCloudinaryWidget(onSuccessCallback, resourceType = 'auto') {
     };
     input.click();
   }
+}
+
+function getCloudinaryUploadErrorMessage(error) {
+  const rawMessage = error?.message || error?.statusText || String(error || '');
+
+  if (rawMessage.toLowerCase().includes('upload preset')) {
+    return `Cloudinary upload preset "${CONFIG.CLOUDINARY_UPLOAD_PRESET}" was not found for cloud "${CONFIG.CLOUDINARY_CLOUD_NAME}". Create an unsigned upload preset with that exact name in Cloudinary, or update VITE_CLOUDINARY_UPLOAD_PRESET to the preset that already exists.`;
+  }
+
+  return `Cloudinary upload failed: ${rawMessage}`;
 }

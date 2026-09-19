@@ -49,7 +49,6 @@ export async function fetchSlideshowSlides() {
       const { data, error } = await client
         .from('slideshow_slides')
         .select('*')
-        .eq('is_active', true)
         .order('display_order', { ascending: true });
 
       if (!error && data && data.length > 0) {
@@ -61,7 +60,8 @@ export async function fetchSlideshowSlides() {
   }
   
   const local = localStorage.getItem('beyond_bites_slides');
-  return local ? JSON.parse(local) : DEFAULT_SLIDES;
+  const slides = local ? JSON.parse(local) : DEFAULT_SLIDES;
+  return slides.sort((a, b) => (a.display_order || 0) - (b.display_order || 0));
 }
 
 // Save Menu Item (Admin)
