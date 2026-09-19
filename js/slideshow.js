@@ -8,6 +8,7 @@ class SlideshowPlayer {
     this.timer = null;
     this.isMuted = true;
     this.slideDuration = 5000; // 5 seconds default for images
+    this.videoDuration = 7000; // play the first 7 seconds of each video
   }
 
   async init() {
@@ -110,8 +111,12 @@ class SlideshowPlayer {
   }
 
   setupEvents() {
-    document.getElementById('slideshow-prev')?.addEventListener('click', () => this.prev());
-    document.getElementById('slideshow-next')?.addEventListener('click', () => this.next());
+    document.getElementById('slideshow-prev')?.addEventListener('click', () => {
+      this.prev();
+    });
+    document.getElementById('slideshow-next')?.addEventListener('click', () => {
+      this.next();
+    });
 
     const muteBtn = document.getElementById('slideshow-mute-btn');
     muteBtn?.addEventListener('click', () => this.toggleMute());
@@ -179,22 +184,17 @@ class SlideshowPlayer {
           });
         }
 
-        // When video ends, move to next slide
-        videoEl.onended = () => this.next();
-
-        // Fallback timer if video is very long
-        this.scheduleNext(15000);
-      } else {
-        this.scheduleNext(this.slideDuration);
       }
-    } else {
-      this.scheduleNext(this.slideDuration);
     }
+
+    const duration = currentSlideData.type === 'video' ? this.videoDuration : this.slideDuration;
+    this.scheduleNext(duration);
   }
 
-  scheduleNext(ms) {
+  scheduleNext(duration) {
     clearTimeout(this.timer);
-    this.timer = setTimeout(() => this.next(), ms);
+    if (this.slides.length <= 1) return;
+    this.timer = setTimeout(() => this.next(), duration);
   }
 
   next() {
