@@ -1,7 +1,7 @@
 // Beyond Bites App Configuration
 export const CONFIG = {
   SUPABASE_URL: import.meta.env.VITE_SUPABASE_URL || 'https://maommxcopvdmihfqnkse.supabase.co',
-  SUPABASE_ANON_KEY: import.meta.env.VITE_SUPABASE_ANON_KEY || '',
+  SUPABASE_ANON_KEY: import.meta.env.VITE_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1hb21teGNvcHZkbWloZnFua3NlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTc1MDIwNzIsImV4cCI6MjA3MzA3ODA3Mn0.1KLWKLdYnDDU4tEnxy4cXXCkqc_2-W6UtNho4Tha4es',
   CLOUDINARY_CLOUD_NAME: import.meta.env.VITE_CLOUDINARY_CLOUD_NAME || 'lapch5uz',
   CLOUDINARY_API_KEY: import.meta.env.VITE_CLOUDINARY_API_KEY || '848742736484911',
   CLOUDINARY_FOLDER: import.meta.env.VITE_CLOUDINARY_FOLDER || 'beyondbite',
