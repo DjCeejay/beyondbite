@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Beyond Bites - Savour the bite, Day and night</title>
   <meta name="description" content="Delicious, freshly prepared breakfast options made with carefully selected ingredients in Port Harcourt." />
+  <meta name="author" content="CodeCPS" />
+  <meta name="theme-color" content="#3B2219" />
   <link rel="icon" type="image/jpeg" href="/assets/logo.jpg" />
   <link rel="stylesheet" href="/css/styles.css" />
 </head>
@@ -22,6 +24,12 @@
           <p class="text-xs font-semibold text-brand-brown tracking-wider">SAVOUR THE BITE, DAY AND NIGHT</p>
         </div>
       </a>
+
+      <nav class="hidden lg:flex items-center gap-8 text-sm font-bold text-brand-darkbrown">
+        <a href="#menu-section" class="hover:text-brand-brown transition-colors">Menu</a>
+        <a href="#experience-section" class="hover:text-brand-brown transition-colors">Experience</a>
+        <a href="#footer-contact" class="hover:text-brand-brown transition-colors">Contact</a>
+      </nav>
 
       <!-- Quick Contact & Customer Order Actions -->
       <div class="flex items-center gap-3">
@@ -49,7 +57,7 @@
       <!-- Hero Text / Brand Story -->
       <div class="order-2 lg:order-1 lg:col-span-5 space-y-6 text-left">
         <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-brand-brown/10 text-brand-brown text-xs font-extrabold uppercase tracking-widest border border-brand-brown/20">
-          <span>✨ Freshly Prepared Daily</span>
+          <span>Freshly Prepared Daily</span>
         </div>
 
         <h2 class="text-4xl sm:text-5xl lg:text-6xl font-serif font-extrabold text-brand-darkbrown leading-tight tracking-tight">
@@ -71,6 +79,21 @@
             <span>Call to Order</span>
           </a>
         </div>
+
+        <div class="grid grid-cols-3 gap-3 pt-4">
+          <div class="border-l-2 border-brand-gold pl-3">
+            <p class="font-serif text-2xl font-extrabold text-brand-darkbrown">Fresh</p>
+            <p class="text-xs font-bold uppercase tracking-wider text-stone-500">Made on order</p>
+          </div>
+          <div class="border-l-2 border-[#3F6B57] pl-3">
+            <p class="font-serif text-2xl font-extrabold text-brand-darkbrown">Easy</p>
+            <p class="text-xs font-bold uppercase tracking-wider text-stone-500">Cart checkout</p>
+          </div>
+          <div class="border-l-2 border-brand-brown pl-3">
+            <p class="font-serif text-2xl font-extrabold text-brand-darkbrown">PH</p>
+            <p class="text-xs font-bold uppercase tracking-wider text-stone-500">Local delivery</p>
+          </div>
+        </div>
       </div>
 
       <!-- Dynamic Picture & Video Slideshow Carousel -->
@@ -80,6 +103,44 @@
         </div>
       </div>
 
+    </div>
+  </section>
+
+  <!-- Experience Highlights -->
+  <section id="experience-section" class="bg-white/70 border-y border-brand-creamDark">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        <div class="lg:col-span-4">
+          <p class="text-xs font-extrabold uppercase tracking-[0.2em] text-[#3F6B57]">Breakfast with better energy</p>
+          <h2 class="mt-3 font-serif text-3xl sm:text-4xl font-extrabold text-brand-darkbrown leading-tight">A simple ordering experience that still feels special.</h2>
+        </div>
+
+        <div class="lg:col-span-8 grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div class="bg-brand-cream border border-brand-creamDark rounded-2xl p-5 shadow-sm">
+            <div class="mb-4 flex h-10 w-10 items-center justify-center rounded-full bg-brand-brown text-white">
+              <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            </div>
+            <h3 class="font-serif text-xl font-bold text-brand-darkbrown">Prepared Fresh</h3>
+            <p class="mt-2 text-sm leading-6 text-stone-600 font-medium">Every order is handled with care, from warm sandwiches to satisfying breakfast combos.</p>
+          </div>
+
+          <div class="bg-brand-cream border border-brand-creamDark rounded-2xl p-5 shadow-sm">
+            <div class="mb-4 flex h-10 w-10 items-center justify-center rounded-full bg-[#3F6B57] text-white">
+              <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 11h14l1 10H4L5 11z"/></svg>
+            </div>
+            <h3 class="font-serif text-xl font-bold text-brand-darkbrown">Quick to Order</h3>
+            <p class="mt-2 text-sm leading-6 text-stone-600 font-medium">Pick your items, review your cart, and send your order straight to WhatsApp.</p>
+          </div>
+
+          <div class="bg-brand-cream border border-brand-creamDark rounded-2xl p-5 shadow-sm">
+            <div class="mb-4 flex h-10 w-10 items-center justify-center rounded-full bg-brand-gold text-brand-darkbrown">
+              <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 11.5a2.5 2.5 0 100-5 2.5 2.5 0 000 5z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.5 9c0 7-7.5 12-7.5 12S4.5 16 4.5 9a7.5 7.5 0 1115 0z"/></svg>
+            </div>
+            <h3 class="font-serif text-xl font-bold text-brand-darkbrown">Port Harcourt Based</h3>
+            <p class="mt-2 text-sm leading-6 text-stone-600 font-medium">Built around convenient ordering for customers in and around Rumuodumaya.</p>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -151,8 +212,51 @@
     </div>
   </div>
 
+  <!-- Founder Note -->
+  <section class="bg-brand-cream border-t border-brand-creamDark">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-20">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
+        <div class="lg:col-span-5">
+          <div class="relative overflow-hidden rounded-3xl shadow-warm-lg border border-brand-creamDark bg-white">
+            <img
+              src="https://images.unsplash.com/photo-1577219491135-ce391730fb2c?auto=format&fit=crop&w=1000&q=80"
+              alt="Founder of Beyond Bites preparing food"
+              class="h-[420px] w-full object-cover"
+            >
+            <div class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-brand-dark/85 via-brand-dark/30 to-transparent p-6">
+              <p class="text-xs font-extrabold uppercase tracking-[0.18em] text-brand-gold">Founder Led</p>
+              <p class="mt-1 font-serif text-2xl font-extrabold text-white">Prepared with care, served with heart.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="lg:col-span-7">
+          <p class="text-xs font-extrabold uppercase tracking-[0.2em] text-brand-brown">A note from our founder</p>
+          <h2 class="mt-3 font-serif text-3xl sm:text-4xl lg:text-5xl font-extrabold text-brand-darkbrown leading-tight">
+            More than breakfast, this is a little moment of joy made for you.
+          </h2>
+          <div class="mt-6 space-y-5 text-base sm:text-lg leading-8 text-stone-700 font-medium">
+            <p>
+              Beyond Bites started from a simple belief: food should not only fill you up, it should make you feel cared for. Every sandwich, combo, and breakfast order is prepared with attention, patience, and the kind of warmth you can taste before the first bite is finished.
+            </p>
+            <p>
+              To every customer who chooses us, thank you for trusting our hands and our heart. Whether you are ordering for a busy morning, a quiet treat, or a meal shared with someone you love, we are grateful to be part of your day.
+            </p>
+          </div>
+
+          <div class="mt-8 border-l-4 border-brand-gold pl-5">
+            <p class="font-serif text-2xl sm:text-3xl font-extrabold italic text-brand-darkbrown leading-snug">
+              Come hungry, leave happy, and let every bite remind you that you deserve something special.
+            </p>
+            <p class="mt-4 text-sm font-extrabold uppercase tracking-[0.16em] text-brand-brown">Founder, Beyond Bites</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- Footer -->
-  <footer class="bg-brand-darkbrown text-white border-t border-brand-gold/20">
+  <footer id="footer-contact" class="bg-brand-darkbrown text-white border-t border-brand-gold/20">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
       <div class="grid grid-cols-1 gap-10 lg:grid-cols-12 lg:gap-12">
         
@@ -216,9 +320,15 @@
 
       </div>
 
-      <div class="mt-10 flex flex-col gap-3 border-t border-white/10 pt-6 text-xs font-semibold text-stone-400 sm:flex-row sm:items-center sm:justify-between">
+      <div class="mt-10 flex flex-col gap-4 border-t border-white/10 pt-6 text-xs font-semibold text-stone-400 lg:flex-row lg:items-center lg:justify-between">
         <p>&copy; 2026 Beyond Bites. All rights reserved.</p>
-        <p>Fresh breakfast, prepared with care in Port Harcourt.</p>
+        <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-4">
+          <p>Fresh breakfast, prepared with care in Port Harcourt.</p>
+          <span class="inline-flex items-center gap-2 text-brand-gold">
+            <span class="h-1.5 w-1.5 rounded-full bg-brand-gold"></span>
+            <span>Made with love CodeCPS</span>
+          </span>
+        </div>
       </div>
     </div>
   </footer>
