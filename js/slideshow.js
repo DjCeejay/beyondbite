@@ -85,7 +85,7 @@ class SlideshowPlayer {
         <div class="slide-item absolute inset-0 w-full h-full ${activeClass}" data-index="${index}" data-type="video">
           <video 
             id="slide-video-${index}"
-            class="w-full h-full object-cover" 
+            class="w-full h-full object-contain md:object-cover bg-brand-dark" 
             poster="${slide.poster_url || ''}" 
             playsinline 
             muted 
@@ -103,7 +103,7 @@ class SlideshowPlayer {
         <img 
           src="${slide.url}" 
           alt="${slide.title || 'Beyond Bites'}" 
-          class="w-full h-full object-cover"
+          class="w-full h-full object-contain md:object-cover bg-brand-dark"
           loading="${index === 0 ? 'eager' : 'lazy'}"
         >
       </div>
