@@ -1,5 +1,5 @@
 import { getAdminSession, adminSignIn, adminSignOut, onAuthStateChange } from './auth.js';
-import { fetchMenuItems, saveMenuItem, deleteMenuItem, fetchSlideshowSlides, saveSlideshowSlide, deleteSlideshowSlide } from './supabase.js';
+import { fetchMenuItems, saveMenuItem, deleteMenuItem, fetchSlideshowSlides, saveSlideshowSlide, deleteSlideshowSlide, syncLocalSlideshowSlidesToSupabase } from './supabase.js';
 import { CONFIG } from './config.js';
 
 let currentAdminSession = null;
@@ -64,8 +64,20 @@ function setupLoginEvents() {
 
 async function loadAdminDashboardData() {
   setupTabs();
+  await migrateLocalSlideshowUploads();
   await refreshMenuItemsTable();
   await refreshSlideshowTable();
+}
+
+async function migrateLocalSlideshowUploads() {
+  try {
+    const result = await syncLocalSlideshowSlidesToSupabase();
+    if (result.synced > 0) {
+      console.info(`Synced ${result.synced} local slideshow upload(s) to Supabase.`);
+    }
+  } catch (err) {
+    console.warn('Could not sync local slideshow uploads to Supabase:', err);
+  }
 }
 
 function setupTabs() {

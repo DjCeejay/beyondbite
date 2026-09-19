@@ -43,7 +43,10 @@ export async function fetchMenuItems() {
 
 // Fetch Hero Slideshow from Supabase or Fallback
 export async function fetchSlideshowSlides() {
+  const localSlides = getLocalSlides();
   const client = getSupabase();
+  let remoteSlides = [];
+
   if (client) {
     try {
       const { data, error } = await client
@@ -51,17 +54,16 @@ export async function fetchSlideshowSlides() {
         .select('*')
         .order('display_order', { ascending: true });
 
-      if (!error && data && data.length > 0) {
-        return data;
+      if (!error && data) {
+        remoteSlides = data;
       }
     } catch (e) {
       console.warn('Error fetching slides from Supabase, using fallback:', e);
     }
   }
-  
-  const local = localStorage.getItem('beyond_bites_slides');
-  const slides = local ? JSON.parse(local) : DEFAULT_SLIDES;
-  return slides.sort((a, b) => (a.display_order || 0) - (b.display_order || 0));
+
+  const slides = mergeSlides(remoteSlides, localSlides);
+  return slides.length > 0 ? sortSlides(slides) : sortSlides(DEFAULT_SLIDES);
 }
 
 // Save Menu Item (Admin)
@@ -138,6 +140,34 @@ export async function saveSlideshowSlide(slide) {
   return slide;
 }
 
+export async function syncLocalSlideshowSlidesToSupabase() {
+  const client = getSupabase();
+  const localSlides = getLocalSlides();
+
+  if (!client || localSlides.length === 0) return { synced: 0, skipped: localSlides.length };
+
+  const { data: remoteSlides = [], error: fetchError } = await client
+    .from('slideshow_slides')
+    .select('url');
+
+  if (fetchError) throw fetchError;
+
+  const remoteUrls = new Set(remoteSlides.map(slide => slide.url));
+  const unsyncedSlides = localSlides.filter(slide => slide.url && !remoteUrls.has(slide.url));
+
+  if (unsyncedSlides.length === 0) {
+    localStorage.removeItem('beyond_bites_slides');
+    return { synced: 0, skipped: localSlides.length };
+  }
+
+  const payload = unsyncedSlides.map(({ id, ...slide }) => slide);
+  const { error: insertError } = await client.from('slideshow_slides').insert(payload);
+  if (insertError) throw insertError;
+
+  localStorage.removeItem('beyond_bites_slides');
+  return { synced: unsyncedSlides.length, skipped: localSlides.length - unsyncedSlides.length };
+}
+
 // Delete Slideshow Slide (Admin)
 export async function deleteSlideshowSlide(id) {
   const client = getSupabase();
@@ -151,4 +181,31 @@ export async function deleteSlideshowSlide(id) {
   const filtered = slides.filter(s => s.id !== id);
   localStorage.setItem('beyond_bites_slides', JSON.stringify(filtered));
   return true;
+}
+
+function getLocalSlides() {
+  try {
+    const local = localStorage.getItem('beyond_bites_slides');
+    return local ? JSON.parse(local) : [];
+  } catch (e) {
+    console.warn('Could not parse local slideshow slides:', e);
+    return [];
+  }
+}
+
+function mergeSlides(remoteSlides, localSlides) {
+  const merged = [];
+  const seenUrls = new Set();
+
+  [...remoteSlides, ...localSlides].forEach(slide => {
+    if (!slide?.url || seenUrls.has(slide.url)) return;
+    seenUrls.add(slide.url);
+    merged.push(slide);
+  });
+
+  return merged;
+}
+
+function sortSlides(slides) {
+  return [...slides].sort((a, b) => (a.display_order || 0) - (b.display_order || 0));
 }
