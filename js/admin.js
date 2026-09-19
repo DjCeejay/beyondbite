@@ -214,8 +214,8 @@ async function refreshSlideshowTable() {
       <td class="p-4 text-sm font-semibold capitalize">${slide.type}</td>
       <td class="p-4 text-sm font-bold">${slide.display_order || 0}</td>
       <td class="p-4 text-sm">
-        <span class="px-2.5 py-1 rounded-full text-xs font-bold ${slide.is_active ? 'bg-emerald-100 text-emerald-800' : 'bg-stone-100 text-stone-600'}">
-          ${slide.is_active ? 'Active' : 'Disabled'}
+        <span class="px-2.5 py-1 rounded-full text-xs font-bold ${getSlideStatusClasses(slide)}">
+          ${getSlideStatusLabel(slide)}
         </span>
       </td>
       <td class="p-4 text-sm text-right space-x-2">
@@ -233,6 +233,19 @@ async function refreshSlideshowTable() {
       }
     });
   });
+}
+
+function getSlideStatusLabel(slide) {
+  if (slide.source === 'local') return 'This device only';
+  if (slide.source === 'shared') return slide.is_active ? 'Shared on mobile' : 'Shared but disabled';
+  return 'Default fallback';
+}
+
+function getSlideStatusClasses(slide) {
+  if (slide.source === 'local') return 'bg-amber-100 text-amber-800';
+  if (slide.source === 'shared' && slide.is_active) return 'bg-emerald-100 text-emerald-800';
+  if (slide.source === 'shared') return 'bg-stone-100 text-stone-600';
+  return 'bg-blue-100 text-blue-800';
 }
 
 async function handleLocalSlidesSync() {

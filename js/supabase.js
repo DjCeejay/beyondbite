@@ -55,7 +55,7 @@ export async function fetchSlideshowSlides() {
         .order('display_order', { ascending: true });
 
       if (!error && data) {
-        remoteSlides = data;
+        remoteSlides = data.map(slide => ({ ...slide, source: 'shared' }));
       }
     } catch (e) {
       console.warn('Error fetching slides from Supabase, using fallback:', e);
@@ -63,7 +63,9 @@ export async function fetchSlideshowSlides() {
   }
 
   const slides = mergeSlides(remoteSlides, localSlides);
-  return slides.length > 0 ? sortSlides(slides) : sortSlides(DEFAULT_SLIDES);
+  return slides.length > 0
+    ? sortSlides(slides)
+    : sortSlides(DEFAULT_SLIDES.map(slide => ({ ...slide, source: 'default' })));
 }
 
 // Save Menu Item (Admin)
@@ -114,30 +116,32 @@ export async function deleteMenuItem(id) {
 // Save Slideshow Slide (Admin)
 export async function saveSlideshowSlide(slide) {
   const client = getSupabase();
+  const { source, ...cleanSlide } = slide;
+
   if (client) {
-    const isNew = !slide.id || slide.id.startsWith('slide-');
+    const isNew = !cleanSlide.id || cleanSlide.id.startsWith('slide-');
     if (isNew) {
-      const { id, ...newObj } = slide;
+      const { id, ...newObj } = cleanSlide;
       const { data, error } = await client.from('slideshow_slides').insert([newObj]).select();
       if (error) throw error;
       return data[0];
     } else {
-      const { data, error } = await client.from('slideshow_slides').update(slide).eq('id', slide.id).select();
+      const { data, error } = await client.from('slideshow_slides').update(cleanSlide).eq('id', cleanSlide.id).select();
       if (error) throw error;
       return data[0];
     }
   }
 
   const slides = await fetchSlideshowSlides();
-  const index = slides.findIndex(s => s.id === slide.id);
+  const index = slides.findIndex(s => s.id === cleanSlide.id);
   if (index >= 0) {
-    slides[index] = slide;
+    slides[index] = cleanSlide;
   } else {
-    slide.id = 'slide-' + Date.now();
-    slides.push(slide);
+    cleanSlide.id = 'slide-' + Date.now();
+    slides.push(cleanSlide);
   }
   localStorage.setItem('beyond_bites_slides', JSON.stringify(slides));
-  return slide;
+  return cleanSlide;
 }
 
 export async function syncLocalSlideshowSlidesToSupabase() {
@@ -160,7 +164,7 @@ export async function syncLocalSlideshowSlidesToSupabase() {
     return { synced: 0, skipped: localSlides.length };
   }
 
-  const payload = unsyncedSlides.map(({ id, ...slide }) => slide);
+  const payload = unsyncedSlides.map(({ id, source, ...slide }) => slide);
   const { error: insertError } = await client.from('slideshow_slides').insert(payload);
   if (insertError) throw insertError;
 
@@ -190,7 +194,8 @@ export async function deleteSlideshowSlide(id) {
 function getLocalSlides() {
   try {
     const local = localStorage.getItem('beyond_bites_slides');
-    return local ? JSON.parse(local) : [];
+    const slides = local ? JSON.parse(local) : [];
+    return slides.map(slide => ({ ...slide, source: 'local' }));
   } catch (e) {
     console.warn('Could not parse local slideshow slides:', e);
     return [];
