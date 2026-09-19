@@ -20,7 +20,7 @@ export default {
         }
       },
       fontFamily: {
-        serif: ['Playfair Display', 'Georgia', 'serif'],
+        serif: ['Plus Jakarta Sans', 'Inter', 'sans-serif'],
         sans: ['Plus Jakarta Sans', 'Inter', 'sans-serif'],
       },
       boxShadow: {
